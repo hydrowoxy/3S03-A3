@@ -1,0 +1,52 @@
+\usepackage{docstyle}
+\usepackage{xcolor}
+\usepackage{afterpage}
+\usepackage{tabularx}
+\usepackage{tocloft}
+\usepackage{longtable}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usepackage[parfill]{parskip}
+\usepackage[final]{pdfpages}
+\usepackage{float}
+\usepackage{appendix}
+\usepackage{listings}
+\usepackage[tableposition=top]{caption}
+\floatstyle{plaintop}
+\restylefloat{table}
+\usepackage{makecell}
+\usepackage[dvipsnames]{xcolor}
+\usepackage[export]{adjustbox}
+\usepackage{xurl}
+\usepackage{easyfig}
+\usepackage{ifthen}
+\usepackage{booktabs}
+\usepackage{epsf,picinpar}
+\usepackage{fdsymbol}
+\usepackage{changepage}
+
+%%%%% TITLE PAGE %%%%%
+\renewcommand\theadfont{\bfseries}
+\newcommand{\teammember}[3]{{#1} & \href{mailto:{#2}}{{#2}} & {#3} \\}
+
+%%%%%%%%%%%%%%%%%%% FREQUENTLY USED ANNOTATIONS %%%%%%%%%%%%%%%%%%%
+\newcommand{\TODO}[1]{
+    {\textcolor{Red}{TODO\ifthenelse{\equal{#1}{}}{}{:~{#1}}}}%
+}
+
+\newcommand{\assignedto}[1]{%
+    \textbf{\noindent\ding{46}\textcolor{white}{~\colorbox{\assignementcolor}{Assigned to:}}~\textcolor{\assignementcolor}{#1}\\}%
+}
+
+%%%%% PERSON MARKER %%%%%
+\renewcommand{\nb}[4]{
+    {\fcolorbox{gray}{#2}{\bfseries\sffamily\scriptsize{#1}}
+	{\sf\small$\blacktriangleright$\textcolor{#4}{\textit{#3}}$\blacktriangleleft$}}%
+}
+\newcommand\personmarker[3]{\noindent\nb{#1}{yellow}{#2}{#3}}
+\newcommand\id[1]{\noindent\personmarker{Dr. David}{#1}{ProcessBlue}}
+
+%%%%% BASIC FORMATTING %%%%%
+\newcommand{\code}[1]{%
+    \texttt{#1}%
+}
