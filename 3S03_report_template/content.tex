@@ -488,6 +488,138 @@ Please see the associated GitHub repository for the test suite. I've
 used Playwright as that is the tool I am most familiar with.
 
 \subsection*{a)}
+
 I selected \texttt{checkboxes} and \texttt{dropdown} as the two cases from 
 the provided list. The tests are provided in \texttt{test\_checkboxes.py} 
 and \texttt{test\_dropdown.py}, respectively.
+
+\medskip
+
+\subsubsection*{Checkboxes (\url{https://the-internet.herokuapp.com/checkboxes})}
+
+This page contains two checkboxes with predefined initial states and supports 
+basic user interactions (checking and unchecking). The test suite verifies both 
+the default configuration and the correctness of state transitions under user actions.
+
+\medskip
+
+Initial state, \texttt{test\_initial\_checkbox\_states()}: 
+Verifies that the first checkbox is initially unchecked and the second is checked, 
+ensuring the page loads with the expected default configuration.
+
+\medskip
+
+Check action, \texttt{test\_check\_first\_checkbox()}:
+Checks that selecting an unchecked checkbox correctly updates its state to checked, 
+confirming basic interaction behaviour.
+
+\medskip
+
+Uncheck action, \texttt{test\_uncheck\_second\_checkbox()}: 
+Verifies that an initially checked checkbox can be unchecked, ensuring that state 
+changes in both directions are supported.
+
+\medskip
+
+Toggle consistency, \texttt{test\_toggle\_twice\_returns\_original()}:
+Checks that performing a check followed by an uncheck returns the checkbox to its 
+original state, validating stability under repeated operations.
+
+\medskip
+
+Multiple selection, \texttt{test\_both\_checkboxes\_checked()}:  
+Ensures that both checkboxes can be selected simultaneously, confirming that 
+independent elements do not interfere with each other.
+
+\medskip
+
+\subsubsection*{Dropdown (\url{https://the-internet.herokuapp.com/dropdown})}
+
+This page contains a dropdown menu with a placeholder and two selectable options. 
+The tests verify correct selection behaviour and consistency of the selected value.
+
+\medskip
+
+Default state, \texttt{test\_default\_dropdown\_state()}: 
+Verifies that no option is selected by default (placeholder is active), ensuring 
+correct initialization of the dropdown.
+
+\medskip
+
+Select first option, \texttt{test\_select\_first\_option()}:
+Checks that selecting the first option updates the dropdown value correctly.
+
+\medskip
+
+Select second option, \texttt{test\_select\_second\_option()}:
+Verifies correct behaviour when selecting the second option.
+
+\medskip
+
+Switching options, \texttt{test\_switch\_between\_options()}:
+Ensures that changing the selection from one option to another updates the state 
+accordingly, validating transitions between valid inputs.
+
+\medskip
+
+Idempotence, \texttt{test\_reselect\_same\_option()}:
+Checks that selecting the same option multiple times does not produce unexpected 
+behaviour and the state remains consistent.
+
+The website passes all of the above tests.
+
+\begin{center}
+    \includegraphics[width=1\textwidth]{../4a_tests_pass.png}
+\end{center}
+
+\subsection*{b)}
+The tests are provided in \texttt{test\_saucedemo.py}. An activity
+diagram for this process is shown below. Apologies for the image
+quality as the diagram is kind of long, I have also attached
+an svg of the same diagram in the GitHub repo in case this one is difficult
+to read.
+
+\begin{center}
+    \includegraphics[width=0.8\textwidth]{../Q4b.png}
+\end{center}
+
+\subsection*{Rationale}
+
+I first mapped out the user flow using an activity diagram, splitting it 
+into four main parts: authentication, shopping, checkout, and order placed. 
+This made it easier to see where the system branches (like valid vs invalid 
+login, cancel vs continue at checkout, and whether required fields are filled 
+or not).
+
+The main test (\texttt{test\_complete\_purchase\_flow}) follows the full happy 
+path. This includes logging in successfully, viewing and sorting products, 
+adding and removing items, going through checkout, verifying totals, and 
+finishing the order. This test basically ensures the core functionality works 
+end-to-end.
+
+To cover the important branches in the diagram, I added a few smaller targeted 
+tests:
+\begin{itemize}
+    \item \texttt{test\_invalid\_user\_displays\_error}: checks the invalid 
+    login case.
+    \item \texttt{test\_checkout\_with\_missing\_fields\_displays\_error}: 
+    checks that the form validation triggers when required fields are missing.
+    \item \texttt{test\_cancel\_checkout\_returns\_to\_cart}: checks that 
+    cancelling checkout correctly returns the user to the cart.
+\end{itemize}
+
+So overall, each decision point in the diagram is covered at least once. The 
+happy path handles all the “successful” transitions, and the extra tests cover 
+the main failure/alternative paths.
+
+I didn't try to test every possible invalid input (like every missing field 
+combination or all bad credential cases), since those would mostly hit the same 
+validation logic and wouldn't add much value. Instead, I focused on cases that 
+actually represent different behaviours in the system.
+
+I also included a more meaningful check during checkout (verifying that 
+subtotal + tax equals the total), so it's not just clicking through pages. 
+Finally, using Playwright's \texttt{expect()} helps avoid flaky tests since 
+it waits for the UI state instead of relying on timing.
+
+
